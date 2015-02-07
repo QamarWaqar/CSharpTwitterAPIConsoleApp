@@ -67,8 +67,7 @@ namespace TweetTest
             System.Diagnostics.Debug.WriteLine("Access Token Secret = " + newCredentials.AccessTokenSecret);
             FileStream fS = File.Open("twitterCredentials.txt", FileMode.Create,FileAccess.ReadWrite);
             StreamWriter sW = new StreamWriter(fS);
-            sW.WriteLine(newCredentials.AccessToken); sW.WriteLine(newCredentials.AccessTokenSecret);
-            sW.WriteLine("XsUQvfcCvHdE1MrbPDwJDuSlK"); sW.WriteLine("G20QAv7p1LgCYYW4dqe62xqqOYI6M8bT1nnNiF0QUxDyNbldQp");
+            sW.WriteLine(newCredentials.AccessToken + "," + newCredentials.AccessTokenSecret + "," + "XsUQvfcCvHdE1MrbPDwJDuSlK" + "," + "G20QAv7p1LgCYYW4dqe62xqqOYI6M8bT1nnNiF0QUxDyNbldQp");
             sW.Close();
         }
         /*public static Task func()
