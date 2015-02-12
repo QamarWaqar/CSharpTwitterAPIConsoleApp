@@ -16,7 +16,8 @@ namespace TweetTest
 
             //gettingToken("XsUQvfcCvHdE1MrbPDwJDuSlK", "G20QAv7p1LgCYYW4dqe62xqqOYI6M8bT1nnNiF0QUxDyNbldQp");
 
-            Tweetinvi.TwitterCredentials.SetCredentials("2462582037-Jf1etrbYD1MVpovzr7rtGnIn7fvQfqXz875DPpF", "ge391MZ3A6RAFkU5PFguS1O0seY0nxgxmQZZXpZ17a4mw", "XsUQvfcCvHdE1MrbPDwJDuSlK", "G20QAv7p1LgCYYW4dqe62xqqOYI6M8bT1nnNiF0QUxDyNbldQp");
+            string[] strArrTC = readTwitterCredentialsFile();
+            Tweetinvi.TwitterCredentials.SetCredentials(strArrTC[0], strArrTC[1], strArrTC[2], strArrTC[3]);
 
             // This is your tweet, save, its ID to delete it in future //
             //Tweetinvi.Core.Interfaces.ITweet iT = Tweetinvi.User.GetLoggedUser().PublishTweet("Hello World!");
@@ -29,7 +30,7 @@ namespace TweetTest
             //Console.WriteLine(Tweetinvi.User.GetLoggedUser().Notifications.ToString());
             //Console.WriteLine(Tweetinvi.User.GetLoggedUser().Name);
 
-            gettingTokenRateLimit("2462582037-Jf1etrbYD1MVpovzr7rtGnIn7fvQfqXz875DPpF", "ge391MZ3A6RAFkU5PFguS1O0seY0nxgxmQZZXpZ17a4mw", "XsUQvfcCvHdE1MrbPDwJDuSlK", "G20QAv7p1LgCYYW4dqe62xqqOYI6M8bT1nnNiF0QUxDyNbldQp");
+            gettingTokenRateLimit(strArrTC[0], strArrTC[1], strArrTC[2], strArrTC[3]);
             Tweetinvi.Core.Interfaces.Streaminvi.IUserStream iUS = Tweetinvi.Stream.CreateUserStream();
             iUS.TweetCreatedByAnyone += IUS_TweetCreatedByAnyone;
             iUS.StartStream();
@@ -50,6 +51,7 @@ namespace TweetTest
             Console.WriteLine("----------");
             //throw new NotImplementedException();
         }
+
         public static void gettingToken(string consumerKey, string consumerSecret)
         {
             var appCredentials = Tweetinvi.CredentialsCreator.GenerateApplicationCredentials(consumerKey, consumerSecret);
@@ -65,11 +67,12 @@ namespace TweetTest
             Console.WriteLine("Access Token Secret = {0}", newCredentials.AccessTokenSecret);
             System.Diagnostics.Debug.WriteLine("Access Token = " + newCredentials.AccessToken);
             System.Diagnostics.Debug.WriteLine("Access Token Secret = " + newCredentials.AccessTokenSecret);
-            FileStream fS = File.Open("twitterCredentials.txt", FileMode.Create,FileAccess.ReadWrite);
+            FileStream fS = File.Open("twitterCredentials.txt", FileMode.Create, FileAccess.ReadWrite);
             StreamWriter sW = new StreamWriter(fS);
             sW.WriteLine(newCredentials.AccessToken + "," + newCredentials.AccessTokenSecret + "," + "XsUQvfcCvHdE1MrbPDwJDuSlK" + "," + "G20QAv7p1LgCYYW4dqe62xqqOYI6M8bT1nnNiF0QUxDyNbldQp");
             sW.Close();
         }
+
         /*public static Task func()
         {
             Task t = new Task(() =>
@@ -83,7 +86,8 @@ namespace TweetTest
         {
             await func();
         }*/
-        public static void tweet(string accessToken, string accessTokenSecret, string consumerKey, string consumerSecret, string tweetString)
+
+        /*public static void tweet(string accessToken, string accessTokenSecret, string consumerKey, string consumerSecret, string tweetString)
         {
             //var credentials = Tweetinvi.TwitterCredentials.CreateCredentials(accessToken, accessTokenSecret, consumerKey, consumerSecret);
             //Tweetinvi.TwitterCredentials.Credentials = credentials;
@@ -91,7 +95,17 @@ namespace TweetTest
             string pubOrNot = Tweetinvi.Tweet.CreateTweet(tweetString).Publish().ToString();
             Console.WriteLine(pubOrNot);
             //Console.WriteLine(Tweetinvi.User.GetLoggedUser().Name);
+        }*/
+
+        public static string[] readTwitterCredentialsFile()
+        {
+            FileStream fS = File.OpenRead("twitterCredentials.txt");
+            StreamReader sR = new StreamReader(fS);
+            string str = sR.ReadLine();
+            string[] strArr = str.Split(','); // accessToken, accessTokenSecret, consumerKey, consumerSecret //
+            return strArr;
         }
+
         public static void gettingTokenRateLimit(string accessToken, string accessTokenSecret, string consumerKey, string consumerSecret)
         {
             var credentials = Tweetinvi.TwitterCredentials.CreateCredentials(accessToken, accessTokenSecret, consumerKey, consumerSecret);
